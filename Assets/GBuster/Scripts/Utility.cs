@@ -4,10 +4,15 @@ namespace GBuster
 {
     public class Utility
     {
-        
+
         #region メソッド
 
-        // positionがpositionListに入っているかどうか
+        /// <summary>
+        /// positionがpositionListに入っているかどうか
+        /// </summary>
+        /// <param name="pos">対象の座標</param>
+        /// <param name="positions">座標リスト</param>
+        /// <returns>リストに入っているかどうかの真偽値</returns>
         public static bool IsContainedInPosList(int[] pos, List<int[]> positions)
         {
             foreach (int[] p in positions)
@@ -18,6 +23,11 @@ namespace GBuster
             return false;
         }
 
+        /// <summary>
+        /// int型のマップ座標からワールド座標への変換
+        /// </summary>
+        /// <param name="mapPos">マップ座標</param>
+        /// <returns>ワールド座標</returns>
         public static float[] MapPosToWorldPos(int[] mapPos)
         {
             float worldPosZ = (0.5f + mapPos[0]) * Define.mapTileSize;
@@ -25,6 +35,11 @@ namespace GBuster
             return new float[2] { worldPosZ, worldPosX };
         }
 
+        /// <summary>
+        /// float型のマップ座標からワールド座標への変換
+        /// </summary>
+        /// <param name="mapPos"></param>
+        /// <returns></returns>
         public static float[] MapPosToWorldPos(float[] mapPos)
         {
             float worldPosZ = (0.5f + mapPos[0]) * Define.mapTileSize;
@@ -33,7 +48,12 @@ namespace GBuster
         }
 
         // まだガワだけ
-        public static int[] WorldPosToMapPos(float z, float x)
+        /// <summary>
+        /// float型のワールド座標からマップ座標への変換
+        /// </summary>
+        /// <param name="worldPos">ワールド座標</param>
+        /// <returns>マップ座標</returns>
+        public static int[] WorldPosToMapPos(float[] worldPos)
         {
             int posZ = 0;
             int posX = 0;

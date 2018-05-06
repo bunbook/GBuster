@@ -43,13 +43,16 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary> 
-    /// 更新処理
+    /// 1frame毎の更新処理
     /// </summary>
     void Update()
     {
         InputDirection();
     }
 
+    /// <summary> 
+    /// 一定秒数毎の更新処理
+    /// </summary>
     void FixedUpdate()
     {
         Turn();
@@ -62,7 +65,10 @@ public class PlayerController : MonoBehaviour
 
     #region メソッド
 
-    public void InputDirection()
+    /// <summary>
+    /// プレイヤーの入力方向取得
+    /// </summary>
+    private void InputDirection()
     {
         float y = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
@@ -71,16 +77,22 @@ public class PlayerController : MonoBehaviour
         rotateDirection = new Vector3(0f, y, 0f);
     }
 
+    /// <summary>
+    /// プレイヤーの移動処理
+    /// </summary>
     private void Move()
     {
         if (!IsRunning)
         {
-            //_rigidbody.velocity = Vector3.zero;
+            _rigidbody.velocity = Vector3.zero;
             return;
         }
         _rigidbody.velocity = _transform.forward * moveSpeed;
     }
 
+    /// <summary>
+    /// プレイヤーの回転処理
+    /// </summary>
     private void Turn()
     {
         if (!IsTurning)
@@ -89,6 +101,9 @@ public class PlayerController : MonoBehaviour
         _transform.Rotate(rotateDirection * rotateSpeed);
     }
 
+    /// <summary>
+    /// プレイヤーのアニメーション処理
+    /// </summary>
     private void Animate()
     {
         animator.SetBool("isRunning", IsRunning);

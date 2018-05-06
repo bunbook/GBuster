@@ -4,6 +4,9 @@ using GBuster;
 
 public class StageData
 {
+    
+    #region 列挙型
+
     public enum MapType
     {
         Blank = 0,
@@ -13,10 +16,20 @@ public class StageData
         Wall
     }
 
+    #endregion
+
+
+    #region フィールド
+
     public MapType[,] mapStatus;
 
     public int[] startPosition;
     public int[] goalPosition;
+
+    #endregion
+
+
+    #region コンストラクタ
 
     public StageData()
     {
@@ -28,6 +41,16 @@ public class StageData
         Init((int)randamSeed, stageNum);
     }
 
+    #endregion
+    
+
+    #region メソッド
+
+    /// <summary>
+    /// ステージデータ初期化
+    /// </summary>
+    /// <param name="randamSeed">疑似乱数の種</param>
+    /// <param name="stageNum">初期化するステージの番号</param>
     private void Init(int randamSeed, int stageNum)
     {
         // mapは番兵のために(縦サイズ + 1) * (横サイズ + 1)の大きさで確保
@@ -43,7 +66,9 @@ public class StageData
         ReducePoleInMapStatus();
     }
 
-    // mapのベース部分を初期化
+    /// <summary>
+    /// mapのベース部分を初期化
+    /// </summary>
     private void InitMapStatus()
     {
         // 全体を空白で初期化
@@ -81,7 +106,10 @@ public class StageData
         mapStatus[goalPosition[0], goalPosition[1]] = MapType.Goal;
     }
 
-    // ドルアーガの塔におけるダンジョン生成アルゴリズムを用いたmap内部の自動生成
+    /// <summary>
+    /// ドルアーガの塔におけるダンジョン生成アルゴリズムを用いたmap内部の自動生成
+    /// </summary>
+    /// <param name="randamSeed">疑似乱数の種</param>
     private void SetMapStatusByDruagasAlgorithm(int randamSeed)
     {
         // 偶数座標の空白部に柱設置
@@ -105,7 +133,7 @@ public class StageData
         int[,] processedPolePositionsMap = new int[Define.mapSizeHeight + 1, Define.mapSizeWidth + 1];
         List<int[]> wallPositions = new List<int[]>();
 
-        // XORするビット番号
+        // XORするビット番号列
         int[] tapSequence = { 4, 7 };
 
         // 随時更新される疑似乱数の種
@@ -183,7 +211,12 @@ public class StageData
         // Debug.Log(GetMapStatusString());
     }
 
-    // 反転線形帰還シフトレジスタによる疑似乱数（0-3）生成器
+    /// <summary>
+    /// 反転線形帰還シフトレジスタによる疑似乱数生成器
+    /// </summary>
+    /// <param name="tapSequence">XORするビット番号列</param>
+    /// <param name="seed">疑似乱数の種</param>
+    /// <returns>疑似乱数（0-3）</returns>
     private int GeneratePresudoRandomNumByILFSR(int[] tapSequence, ref int seed)
     {
         int currentBit = 0;
@@ -195,7 +228,12 @@ public class StageData
         return (nextBit << 1) | currentBit;
     }
 
-    //反転線形帰還シフトレジスタ
+    /// <summary>
+    /// 反転線形帰還シフトレジスタ
+    /// </summary>
+    /// <param name="tapSequence">XORするビット番号列</param>
+    /// <param name="seed">初期ビット列</param>
+    /// <returns>1ビット</returns>
     private int ILFSR(int[] tapSequence, int seed)
     {
         int bit = 0;
@@ -206,6 +244,34 @@ public class StageData
         return ((seed << 1) | (bit ^ 1));
     }
 
+    /// <summary>
+    /// 柱削減（三方が空白の柱を空白に）
+    /// </summary>
+    private void ReducePoleInMapStatus()
+    {
+        int[] dx = new int[4] { 0, 0, -1, 1 };
+        int[] dz = new int[4] { 1, -1, 0, 0 };
+
+        for (int z = 2; z < Define.mapSizeHeight - 1; z += 2)
+        {
+            for (int x = 2; x < Define.mapSizeWidth - 1; x += 2)
+            {
+                int linkedBlanklNum = 0;
+                for (int d = 0; d < 4; d++)
+                {
+                    if (mapStatus[z + dz[d], x + dx[d]] == MapType.Blank)
+                        linkedBlanklNum++;
+                }
+                if (linkedBlanklNum == 3)
+                    mapStatus[z, x] = MapType.Blank;
+            }
+        }
+    }
+
+    /// <summary>
+    /// mapStatusの文字列化
+    /// </summary>
+    /// <returns>mapStatusの文字列</returns>
     public string GetMapStatusString()
     {
         string str = string.Empty;
@@ -238,27 +304,5 @@ public class StageData
         return str;
     }
 
-    /// <summary>
-    /// 柱を削減（三方が空白の柱を空白に）
-    /// </summary>
-    private void ReducePoleInMapStatus()
-    {
-        int[] dx = new int[4] { 0, 0, -1, 1};
-        int[] dz = new int[4] { 1, -1, 0, 0};
-
-        for (int z = 2; z < Define.mapSizeHeight - 1; z += 2)
-        {
-            for (int x = 2; x < Define.mapSizeWidth - 1; x += 2)
-            {
-                int linkedBlanklNum = 0;
-                for(int d = 0; d < 4; d++)
-                {
-                    if (mapStatus[z + dz[d], x + dx[d]] == MapType.Blank)
-                        linkedBlanklNum++;
-                }
-                if (linkedBlanklNum == 3)
-                    mapStatus[z, x] = MapType.Blank;
-            }
-        }
-    }
+    #endregion
 }

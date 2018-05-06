@@ -1,17 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour {
-
-    public enum CommandType
-    {
-        Up = 0,
-        Down,
-        Right,
-        Left,
-        Shot
-    }
 
     public enum StatusType
     {
@@ -21,8 +10,6 @@ public class PlayerStatus : MonoBehaviour {
     }
 
     public StatusType status;
-
-    public Dictionary<CommandType, int> commands;
 
     public float speed;
 

@@ -73,7 +73,10 @@ public class StageController : MonoBehaviour
 
     #region メソッド
 
-    
+    /// <summary>
+    /// マップ内のオブジェクト生成
+    /// </summary>
+    /// <param name="stageNum">生成するマップのステージ番号</param>
     private void MakeMap(Define.StageNum stageNum)
     {
         // ステージ親オブジェクト作成・各階層のTransform取得
@@ -101,7 +104,7 @@ public class StageController : MonoBehaviour
 
                 //壁作成
                 int[] wallPos = new int[2] { z, x };
-                MakeWalls(stageNum, wallPos);
+                MakeWall(wallPos);
 
                 StockWallSequenceFirstLastPos(stageNum, wallSequencePositions, wallPos, alreadyCheckedWidthWalls, true);
                 StockWallSequenceFirstLastPos(stageNum, wallSequencePositions, wallPos, alreadyCheckedHeightWalls, false);
@@ -119,9 +122,12 @@ public class StageController : MonoBehaviour
         MakeInvisibleWalls(wallSequencePositions);
     }
 
-    private void MakeWalls(Define.StageNum stageNum, int[] wallPos)
+    /// <summary>
+    /// 壁生成
+    /// </summary>
+    /// <param name="wallPos">壁の座標</param>
+    private void MakeWall(int[] wallPos)
     {
-
         Transform wallTransform = Instantiate(tombstonePrefab).GetComponent<Transform>();
         wallTransform.SetParent(wallParent);
 
@@ -130,7 +136,14 @@ public class StageController : MonoBehaviour
         wallTransform.position = new Vector3(pos[1], posY, pos[0]);
     }
 
-    // 一方向に連なった壁の最初と最後の壁の位置をリストにストック
+    /// <summary>
+    /// 一方向に連なった壁の最初と最後の壁の位置をリストにストック
+    /// </summary>
+    /// <param name="stageNum">対象となるマップのステージ番号</param>
+    /// <param name="wallSequencePositions">連なった壁の最初の座標と最後の座標のリスト</param>
+    /// <param name="wallPosition">調べる壁の座標</param>
+    /// <param name="alreadyCheckedWallPositions">既に調べた壁の座標リスト</param>
+    /// <param name="isWidthCheck">横方向のチェックかどうか</param>
     private void StockWallSequenceFirstLastPos(Define.StageNum stageNum, List<int[,]> wallSequencePositions,
                                                 int[] wallPosition, List<int[]> alreadyCheckedWallPositions, bool isWidthCheck)
     {
@@ -147,9 +160,7 @@ public class StageController : MonoBehaviour
         int wallPosX = wallPosition[1];
         int wallCount = 0;
 
-        // wallCountなくしてもちゃんと不可視壁さくせいできるかチェック
-        // 柱だけのときでも作成できるかとか
-
+        // wallCountなくしてもちゃんと不可視壁作成できるかチェック
         while (true)
         {
             wallPosZ += dz[dIndex];
@@ -170,7 +181,6 @@ public class StageController : MonoBehaviour
                 break;
             }
 
-
             int[] nextWallPos = new int[2] { wallPosZ, wallPosX };
             alreadyCheckedWallPositions.Add(nextWallPos);
             wallCount++;
@@ -178,6 +188,10 @@ public class StageController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 見えない壁生成
+    /// </summary>
+    /// <param name="wallPositions">見えない壁の位置</param>
     private void MakeInvisibleWalls(List<int[,]> wallPositions)
     {
         foreach (int[,] twoWallPos in wallPositions)
@@ -218,8 +232,6 @@ public class StageController : MonoBehaviour
             wallTransform.position = new Vector3(worldPos[1], wallTransform.position.y, worldPos[0]);
             float scaleX = lenX > 0 ? Define.mapTileSize * lenX : Define.mapTileSize - offset;
             float scaleZ = lenZ > 0 ? Define.mapTileSize * lenZ : Define.mapTileSize - offset;
-            // float scaleX = Define.mapTileSize * (lenX + 1) - offset;
-            // float scaleZ = Define.mapTileSize * (lenZ + 1) - offset;
             wallTransform.localScale = new Vector3(scaleX, wallTransform.localScale.y, scaleZ);
         }
     }
