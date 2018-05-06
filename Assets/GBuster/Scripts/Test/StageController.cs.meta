@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d0df5f60d9e143041ad804e7c72623d0
+timeCreated: 1525577567
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - stagePrefab: {fileID: 1832451187033740, guid: e4156810d5a6ac44a9a495559c195f62,
+      type: 2}
+  - tombstonePrefab: {fileID: 1807754861510580, guid: 94f2c69823dcd524eb4a756c633741e6,
+      type: 2}
+  - invisibleWallPrefab: {fileID: 1987623875675640, guid: 5345a14d4f77bd54187b3acaae4f1585,
+      type: 2}
+  - invisibleCapsuleWallPrefab: {fileID: 1159882855015494, guid: e5fa238b50ea798498a1b164243e5b6b,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
