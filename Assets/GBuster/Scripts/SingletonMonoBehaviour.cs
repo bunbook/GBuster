@@ -44,7 +44,6 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
         if (isRootObject)
         {
-            Debug.Log("rootです");
             if (this != Instance)
                 Destroy(this.gameObject);
             else
@@ -52,7 +51,6 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         }
         else
         {
-            Debug.Log("rootではないです");
             if (this != Instance)
                 Destroy(this);
         }

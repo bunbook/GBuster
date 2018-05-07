@@ -8,6 +8,8 @@ public class StageController : MonoBehaviour
 
     #region フィールド
 
+    private GameManager gameManager;
+
     private Dictionary<Define.StageNum, StageData> stages;
 
     [SerializeField]
@@ -57,7 +59,9 @@ public class StageController : MonoBehaviour
 	/// </summary>
 	void Start () 
 	{
+        gameManager = GameManager.Instance;
         MakeMap(Define.StageNum.Zero);
+        gameManager.CurrentStage = stages[Define.StageNum.Zero];
 	}
 	
 	/// <summary> 

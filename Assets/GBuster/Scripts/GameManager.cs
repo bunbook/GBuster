@@ -7,14 +7,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     #region フィールド
 
-    
-
-	#endregion
+    #endregion
 
 
-	#region プロパティ
-	
-    
+    #region プロパティ
+
+    public StageData CurrentStage { get; set; }
 
 	#endregion
 
